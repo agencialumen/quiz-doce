@@ -37,7 +37,7 @@ export default function RootLayout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '1347315153239318');
+            fbq('init', '1246774987448698');
             fbq('track', 'PageView');
           `}
         </Script>
@@ -46,10 +46,11 @@ export default function RootLayout({
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1347315153239318&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1246774987448698&ev=PageView&noscript=1"
             alt="Facebook Pixel"
           />
         </noscript>
+        {/* End Meta Pixel Code */}
 
         {/* Inicialização de áudio */}
         <Script id="audio-init" strategy="afterInteractive">
