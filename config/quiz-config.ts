@@ -5,7 +5,7 @@ export const QUIZ_CONFIG = {
     {
       question: "Qual dessas opções te define melhor?",
       options: [
-        "Quero começar a vender doces pra ganhar dinheiro",
+        "Vender doces pra ganhar dinheiro",
         "Já vendo, mas quero melhorar",
         "Amo confeitaria como hobby",
       ],
