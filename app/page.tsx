@@ -27,6 +27,7 @@ import { playSound } from "@/lib/sound-effects"
 import CoinAnimation from "@/components/coin-animation"
 import QuizProgress from "@/components/quiz-progress"
 import BonusItem from "@/components/bonus-item"
+import PhoneCaptureForm from "@/components/phone-capture-form"
 
 // Tipos
 type QuizStep = "quiz" | "offer"
@@ -43,19 +44,19 @@ const BONUS_ITEMS = [
   {
     id: 1,
     title: "Brigadeiros Gourmet Sem Fogo",
-    imageSrc: "https://iili.io/3S09FLP.png",
+    imageSrc: "/images/brigadeiros-gourmet.png",
     description: "Aprenda a fazer brigadeiros gourmet sem precisar ir ao fogo!",
   },
   {
     id: 2,
     title: "Donuts Magníficos",
-    imageSrc: "https://iili.io/3S0FB4I.md.png",
+    imageSrc: "/images/donuts-magnificos.png",
     description: "Receitas exclusivas de donuts que derretem na boca!",
   },
   {
     id: 3,
     title: "Planilha de Custos e Preços",
-    imageSrc: "https://iili.io/3S0iUmX.md.png",
+    imageSrc: "/images/planilha-custos.png",
     description: "Calcule seus custos e preços de venda para maximizar seus lucros!",
   },
 ]
@@ -64,6 +65,9 @@ const BONUS_ITEMS = [
 const CHECKOUT_URL = "https://pay.kirvano.com/7416ffba-79c5-49e7-84d8-6358d582b7cd"
 
 export default function Home() {
+  // Add a new state for the phone capture form at the top of the component
+  const [showPhoneForm, setShowPhoneForm] = useState(true)
+
   // Estados
   const [step, setStep] = useState<QuizStep>("quiz")
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -275,7 +279,7 @@ export default function Home() {
       name: "Seu Perfil de Confeiteira",
       message: profileText,
       time: "agora",
-      avatar: "https://iili.io/3S0bWaj.jpg",
+      avatar: "/placeholder.svg?height=40&width=40",
     }
 
     setCurrentNotification(profileNotification)
@@ -388,6 +392,12 @@ export default function Home() {
     window.location.href = CHECKOUT_URL
   }
 
+  // Add this function to handle form completion
+  const handlePhoneFormComplete = () => {
+    setShowPhoneForm(false)
+  }
+
+  // Modify the main return statement to conditionally show the phone form or quiz
   return (
     <main className="min-h-screen bg-gradient-to-b from-pink-50 to-amber-50 flex flex-col items-center justify-center relative overflow-hidden">
       {/* Notificações */}
@@ -405,7 +415,7 @@ export default function Home() {
       {/* Barra de progresso e contador de moedas */}
       <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm p-2 z-10">
         <div className="container mx-auto flex items-center justify-between">
-          {step === "quiz" && (
+          {step === "quiz" && !showPhoneForm && (
             <div className="w-full max-w-md">
               <QuizProgress currentStep={currentQuestion + 1} totalSteps={questions.length} />
               <AnimatePresence>
@@ -422,53 +432,67 @@ export default function Home() {
               </AnimatePresence>
             </div>
           )}
-          <motion.div
-            className="flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-full ml-auto"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Coins size={16} className="text-amber-600" />
-            <span className="font-bold text-amber-800">{coins}</span>
-          </motion.div>
+          {!showPhoneForm && (
+            <motion.div
+              className="flex items-center gap-1 bg-amber-100 px-3 py-1 rounded-full ml-auto"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Coins size={16} className="text-amber-600" />
+              <span className="font-bold text-amber-800">{coins}</span>
+            </motion.div>
+          )}
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8 md:py-16 z-10">
         <AnimatePresence mode="wait">
-          {/* Quiz */}
-          {step === "quiz" && (
+          {/* Phone Capture Form */}
+          {showPhoneForm ? (
             <motion.div
-              key="quiz"
+              key="phone-form"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="max-w-md md:max-w-2xl mx-auto"
             >
-              <Card className="p-4 sm:p-5 md:p-8 bg-white/90 backdrop-blur-sm shadow-lg rounded-2xl border-pink-200">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-pink-800 mb-3 sm:mb-4 md:mb-6">
-                  {questions[currentQuestion].question}
-                </h2>
-                <div className="space-y-2 sm:space-y-3 md:space-y-4">
-                  {questions[currentQuestion].options.map((option, index) => (
-                    <motion.div key={index} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                      <Button
-                        onClick={() => answerQuestion(index)}
-                        variant="outline"
-                        className="w-full justify-start text-left p-3 md:p-4 border-2 border-pink-100 hover:border-pink-300 hover:bg-pink-50 text-pink-800 font-medium rounded-xl transition-all text-sm md:text-base min-h-[60px]"
-                      >
-                        <span className="line-clamp-3">{option}</span>
-                      </Button>
-                    </motion.div>
-                  ))}
-                </div>
-                {questions[currentQuestion].specialMessage && (
-                  <p className="mt-2 sm:mt-3 md:mt-4 text-xs md:text-sm text-amber-600 flex items-center">
-                    <Award size={16} className="mr-1 flex-shrink-0" />
-                    {questions[currentQuestion].specialMessage}
-                  </p>
-                )}
-              </Card>
+              <PhoneCaptureForm onComplete={handlePhoneFormComplete} />
             </motion.div>
+          ) : (
+            /* Quiz */
+            step === "quiz" && (
+              <motion.div
+                key="quiz"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="max-w-md md:max-w-2xl mx-auto"
+              >
+                <Card className="p-4 sm:p-5 md:p-8 bg-white/90 backdrop-blur-sm shadow-lg rounded-2xl border-pink-200">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-pink-800 mb-3 sm:mb-4 md:mb-6">
+                    {questions[currentQuestion].question}
+                  </h2>
+                  <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                    {questions[currentQuestion].options.map((option, index) => (
+                      <motion.div key={index} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                        <Button
+                          onClick={() => answerQuestion(index)}
+                          variant="outline"
+                          className="w-full justify-start text-left p-3 md:p-4 border-2 border-pink-100 hover:border-pink-300 hover:bg-pink-50 text-pink-800 font-medium rounded-xl transition-all text-sm md:text-base min-h-[60px]"
+                        >
+                          <span className="line-clamp-3">{option}</span>
+                        </Button>
+                      </motion.div>
+                    ))}
+                  </div>
+                  {questions[currentQuestion].specialMessage && (
+                    <p className="mt-2 sm:mt-3 md:mt-4 text-xs md:text-sm text-amber-600 flex items-center">
+                      <Award size={16} className="mr-1 flex-shrink-0" />
+                      {questions[currentQuestion].specialMessage}
+                    </p>
+                  )}
+                </Card>
+              </motion.div>
+            )
           )}
 
           {/* Oferta */}
@@ -514,7 +538,7 @@ export default function Home() {
                     >
                       <div className="absolute inset-0 bg-gradient-to-tr from-pink-300 to-amber-200 rounded-lg transform rotate-2 scale-105 -z-10"></div>
                       <Image
-                        src="https://iili.io/3S19vbR.md.png"
+                        src="/images/150-receitas.png"
                         width={300}
                         height={400}
                         alt="150 Recheios & Receitas - Renda Extra"
