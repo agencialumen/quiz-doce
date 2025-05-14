@@ -44,19 +44,19 @@ const BONUS_ITEMS = [
   {
     id: 1,
     title: "Brigadeiros Gourmet Sem Fogo",
-    imageSrc: "/images/brigadeiros-gourmet.png",
+    imageSrc: "https://iili.io/3UBxWUg.md.png",
     description: "Aprenda a fazer brigadeiros gourmet sem precisar ir ao fogo!",
   },
   {
     id: 2,
     title: "Donuts Magníficos",
-    imageSrc: "/images/donuts-magnificos.png",
+    imageSrc: "https://iili.io/3UBzTIR.md.png",
     description: "Receitas exclusivas de donuts que derretem na boca!",
   },
   {
     id: 3,
     title: "Planilha de Custos e Preços",
-    imageSrc: "/images/planilha-custos.png",
+    imageSrc: "https://iili.io/3UBIKuf.md.png",
     description: "Calcule seus custos e preços de venda para maximizar seus lucros!",
   },
 ]
@@ -279,7 +279,7 @@ export default function Home() {
       name: "Seu Perfil de Confeiteira",
       message: profileText,
       time: "agora",
-      avatar: "/placeholder.svg?height=40&width=40",
+      avatar: "https://iili.io/3UBTBRa.jpg",
     }
 
     setCurrentNotification(profileNotification)
@@ -538,7 +538,7 @@ export default function Home() {
                     >
                       <div className="absolute inset-0 bg-gradient-to-tr from-pink-300 to-amber-200 rounded-lg transform rotate-2 scale-105 -z-10"></div>
                       <Image
-                        src="/images/150-receitas.png"
+                        src="https://iili.io/3UBn71e.md.png"
                         width={300}
                         height={400}
                         alt="150 Recheios & Receitas - Renda Extra"

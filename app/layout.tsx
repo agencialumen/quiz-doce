@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Responda 5 perguntas rápidas, acumule moedas e descubra seu perfil de confeiteira. Bônus liberado no final!",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-  generator: "v0.dev",
+  generator: "GDEV",
 }
 
 export default function RootLayout({
